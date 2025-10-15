@@ -28,20 +28,22 @@ export async function fetchPlaceholders(prefix = 'default') {
             return resp.json();
           }
           return {};
-        }).then((json) => {
-        const placeholders = {};
-        json.data
-          .filter((placeholder) => placeholder.Key)
-          .forEach((placeholder) => {
-            placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
-          });
-        window.placeholders[prefix] = placeholders;
-        resolve(window.placeholders[prefix]);
-      }).catch(() => {
-        // error loading placeholders
-        window.placeholders[prefix] = {};
-        resolve(window.placeholders[prefix]);
-      });
+        })
+        .then((json) => {
+          const placeholders = {};
+          json.data
+            .filter((placeholder) => placeholder.Key)
+            .forEach((placeholder) => {
+              placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
+            });
+          window.placeholders[prefix] = placeholders;
+          resolve(window.placeholders[prefix]);
+        })
+        .catch(() => {
+          // error loading placeholders
+          window.placeholders[prefix] = {};
+          resolve(window.placeholders[prefix]);
+        });
     });
   }
   return window.placeholders[`${prefix}`];
